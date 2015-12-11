@@ -4,7 +4,7 @@ __author__ = 'panda'
 class Danmaku(object):
     danmu_ID = ''
     user_ID = ''
-    Word = {}
+    # Word = {}
     Time = ''
 
     def __init__(self):
@@ -18,14 +18,14 @@ class Danmaku(object):
 
     def getUserID(self): return self.user_ID
 
-    def setWord(self, content, flag):
-        key = content.decode('utf-8') + '/' + flag
-        if self.Word.has_key(key):
-            self.Word[key] = self.Word.get(key) + 1
-        else:
-            self.Word[key] = 1
-
-    def getWord(self): return self.Word
+    # def setWord(self, content, flag):
+    #     key = content + '/' + flag
+    #     if self.Word.has_key(key):
+    #         self.Word[key] = self.Word.get(key) + 1
+    #     else:
+    #         self.Word[key] = 1
+    #
+    # def getWord(self): return self.Word
 
     # def setFlag(self, flag): self.Flag = flag
 
