@@ -1,10 +1,11 @@
+#-*- coding: UTF-8 -*-
 __author__ = 'panda'
 
 class Danmaku(object):
-    danmu_ID = str
-    user_ID = str
+    danmu_ID = ''
+    user_ID = ''
     Word = {}
-    Time = str
+    Time = ''
 
     def __init__(self):
         pass
@@ -18,8 +19,8 @@ class Danmaku(object):
     def getUserID(self): return self.user_ID
 
     def setWord(self, content, flag):
-        key = content + '/' + flag
-        if self.Word.has_key(key.encode('UTF-8')):
+        key = content.decode('utf-8') + '/' + flag
+        if self.Word.has_key(key):
             self.Word[key] = self.Word.get(key) + 1
         else:
             self.Word[key] = 1

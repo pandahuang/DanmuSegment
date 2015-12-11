@@ -3,6 +3,7 @@ __author__ = 'panda'
 
 import jieba.posseg as wflag
 import danmaku
+import json
 import os
 
 def readDanmu(filename):
@@ -12,6 +13,7 @@ def readDanmu(filename):
     for line in lines:
         danmu = line.strip('\n').strip('<d p="').strip('</d>')
         danmulist.append(danmu)
+    fopen.close()
     return danmulist
 
 def wordSegement(danmulist):
@@ -31,17 +33,32 @@ def wordSegement(danmulist):
             danmakulist.append(danmakuJ)
     return danmakulist
 
-# def wordFlag():
-#     pass
+def jsonformatTrans(danmakulist):
+    jsonlist = []
+    for danmaku in danmakulist:
+        jsondata = []
+        wordproperties = {}
+        wordproperties['danmu_ID'] = danmaku.getUserID()
+        wordproperties['user_ID'] = danmaku.getUserID()
+        wordproperties['Time'] = danmaku.getTime()
+        wordproperties['Word'] = danmaku.getWord()
+        jsonstr = json.dumps(wordproperties)
+        jsonlist.append(jsonstr)
+    return jsonlist
 
-def formatTrans():
-    pass
-
-def writeDanmaku():
+def writeDanmaku(jsonlist, filename):
+    fwrite = open(filename, 'w')
+    count = 1
+    for jsonstr in jsonlist:
+        while count == 1:
+            fwrite.write(jsonstr + '\n')
+            count = count + 1
+    fwrite.close()
     pass
 
 if __name__ == '__main__':
     danmulists = readDanmu('D:\\python_workspace\\TSCwordSegmentation\\tsc\\example\\jieba\\FateUBW\\FateUBW00.xml')
     danmakulists = wordSegement(danmulists)
-    print(len(danmulists))
+    print(len(danmakulists))
+    writeDanmaku(jsonformatTrans(danmakulists), 'D:\\python_workspace\\TSCwordSegmentation\\tsc\\example\\jieba\\FateUBW\\parses')
     pass
