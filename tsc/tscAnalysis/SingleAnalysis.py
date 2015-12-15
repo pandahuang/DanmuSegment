@@ -1,22 +1,44 @@
 #-*- coding: utf-8 -*-
 __author__ = 'panda'
 
-def userNumStatistics(danmukulist, ask):
-    TimeList = [danmaku.Time for danmaku in danmukulist]
-    UserIDList = [danmaku.user_ID for danmaku in danmukulist]
-    return Count(UserIDList, ask)
-    pass
+import os
+import codecs
+import json
 
-def Count(UserIDList, ask = 'userAmounts'):
+def CountAmounts(danmakulist, count = -1, CallByAll = True):
     UserNumDict = {}
+    UserIDList = [danmaku.getUserID() for danmaku in danmakulist]
     for user in UserIDList:
-        # if UserNumDict.has_key(user):
-        #     UserNumDict[user] = UserNumDict[user] + 1
-        # else:
-        UserNumDict[user] = 1
-    if ask == 'userAmounts':
+        if UserNumDict.has_key(user):
+            UserNumDict[user] = UserNumDict[user] + 1
+        else:
+            UserNumDict[user] = 1
+    if CallByAll:
         return len(UserNumDict.keys())
-    if ask == 'userWords':
-        return sorted(UserNumDict.iteritems(), key = lambda d:d[1], reverse=True).keys()
-    if ask == 'userPresents':
+    else :
+        print 'The userAmounts of the file %d is %d'%(count, len(UserNumDict.keys()))
+
+def CountUserWords(danmakulist, count = -1, CallByAll = True):
+    UserNumDict = {}
+    UserIDList = [danmaku.getUserID() for danmaku in danmakulist]
+    for user in UserIDList:
+        if UserNumDict.has_key(user):
+            UserNumDict[user] = UserNumDict[user] + 1
+        else:
+            UserNumDict[user] = 1
+    if CallByAll:
         return UserNumDict
+    else:
+        with codecs.open(os.path.join(os.path.abspath('.'), 'UserWordsOf' + str(count)), 'w', 'utf-8') as fopen:
+            fopen.write(json.dumps(sorted(UserNumDict.iteritems(), key = lambda d:d[1], reverse=True), ensure_ascii=False))
+
+def CountUserSeries(danmakulist, count = -1, CallByAll = True):
+    UserNumDict = {}
+    UserIDList = [danmaku.getUserID() for danmaku in danmakulist]
+    for user in UserIDList:
+        UserNumDict[user] = 1
+    if CallByAll:
+        return UserNumDict
+
+def DanmakuStatistic(danmakulist):
+    pass

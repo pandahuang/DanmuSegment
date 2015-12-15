@@ -6,7 +6,6 @@ import danmaku
 import json
 import codecs
 import os
-import tsc.tscAnalysis.AllAnalysis
 
 def readDanmu(filename):
     danmulist = []
@@ -33,15 +32,12 @@ def wordSegement(danmulist):
             danmakulist.append(danmakuJ)
     return danmakulist
 
-def jsonformatTrans(danmakulist):
+def jsonformatTrans(danmakulist, dirname = ''):
     jsonlist = []
     for danmaku in danmakulist:
-        # wordproperties['danmu_ID'] = danmaku.getDanmuID()
-        # wordproperties['user_ID'] = danmaku.getUserID()
-        # wordproperties['Time'] = danmaku.getTime()
         wordproperties = jsonLtpConvertor(danmaku)
         jsonstr = json.dumps(wordproperties, ensure_ascii=False)
-        # writeDanmakuByUser(jsonstr,setFileName('D:\\python_workspace\\TSCwordSegmentation\\tsc\\example\\jieba\\FateUBW', danmaku.getUserID()))
+        # writeDanmakuByDanmu(jsonstr, os.path.join(dirname, danmaku.getDanmuID()))
         jsonlist.append(jsonstr)
     return jsonlist
 
@@ -58,7 +54,7 @@ def jsonLtpConvertor(danmaku):
         words.append(contents)
     return words
 
-def writeDanmakuByUser(jsonstr, filename):
+def writeDanmakuByDanmu(jsonstr, filename):
     with codecs.open(filename, 'w', 'utf-8') as fwrite:
         fwrite.write(jsonstr)
 
@@ -69,27 +65,15 @@ def writeDanmaku(jsonlist, filename):
     fwrite.close()
     pass
 
-def getFilelist(path = 'D:\\python_workspace\\TSCwordSegmentation\\tsc\\example\\jieba\\FateUBW'):
+def getFilelist(path):
     filenamelist = []
     for file in os.listdir(path):
         filenamelist.append(path + '\\' + file)
     return filenamelist
 
-def setFileName(path):
-    filename = path + '.parse'
-    return filename
-
-if __name__ == '__main__':
-    AllDanmaku = []
-    filenamelist = getFilelist()
-    #cut words
-    for filename in filenamelist:
-        danmulists = readDanmu(filename)
-        danmakulists = wordSegement(danmulists)
-        AllDanmaku.append(danmakulists)
-        # writeDanmaku(jsonformatTrans(danmakulists), setFileName(filename))
-        print(len(danmakulists))
-    #Analysis
-    tsc.tscAnalysis.AllAnalysis.UserSeriesNum(AllDanmaku)
-
-    pass
+def setDirName(path, count):
+    dirstr = 'parse' + str(count)
+    dirname = os.path.join(os.path.join(os.path.split(path)[0], 'parses'), dirstr)
+    os.mkdir(dirname)
+    print 'Writing dir : %s ...'%dirname
+    return dirname

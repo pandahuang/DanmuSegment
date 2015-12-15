@@ -1,5 +1,5 @@
 __author__ = 'panda'
 
-ID = int(5)
+Str = 'start segement processing:...'
 
-print(ID)
+print '%s'%Str
