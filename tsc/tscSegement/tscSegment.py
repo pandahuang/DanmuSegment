@@ -37,7 +37,7 @@ def jsonformatTrans(danmakulist, dirname = ''):
     for danmaku in danmakulist:
         wordproperties = jsonLtpConvertor(danmaku)
         jsonstr = json.dumps(wordproperties, ensure_ascii=False)
-        # writeDanmakuByDanmu(jsonstr, os.path.join(dirname, danmaku.getDanmuID()))
+        writeDanmakuByDanmu(jsonstr, os.path.join(dirname, danmaku.getDanmuID() + '.parse'))
         jsonlist.append(jsonstr)
     return jsonlist
 
